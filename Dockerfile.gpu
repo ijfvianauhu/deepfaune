@@ -1,0 +1,67 @@
+# CUDA base image
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+ARG USERID
+ARG GROUPID
+
+ENV APP_CONFIG_DIR=/config
+
+# (opcional) si NO quieres ejecutar como root, crea usuario y dale permisos:
+# RUN useradd -m appuser && chown -R appuser:appuser /config /app
+# RUN groupadd -g ${GROUPID} appgroup && useradd -m -u ${USERID} -g ${GROUPID} appuser
+# USER appuser
+
+RUN mkdir -p /config
+RUN mkdir -p /data
+
+# Instalar Python 3.10 y dependencias
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 \
+    python3.10-venv \
+    python3-pip \
+    python3-tk \
+    tk \
+    tcl \
+    libgl1 \
+    libglib2.0-0 \
+    libsm6 \
+    libxext6 \
+    libxrender1 \
+    ffmpeg \
+    git \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+# Hacer python3.10 el default
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3.10 1
+
+WORKDIR /app
+
+# Crear directorios
+RUN mkdir -p /config /data
+
+# Copiar código
+COPY software /app
+COPY requirements.txt /app
+
+# Descargar modelos
+RUN curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-yolov8s_960.pt -o deepfaune-yolov8s_960.pt && \
+    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0.pt -o md_v1000.0.0.pt && \
+    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0-redwood.pt -o md_v1000.0.0-redwood.pt && \
+    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt -o deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt && \
+    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt -o deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt
+
+# Instalar pip actualizado
+RUN python -m pip install --upgrade pip setuptools wheel
+
+# 🔥 Instalar PyTorch con CUDA 12.1
+RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+# Instalar resto de dependencias
+RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+# Si es paquete instalable
+RUN if [ -f pyproject.toml ] || [ -f setup.py ]; then pip install -e .; fi
+
+CMD ["python", "./deepfauneGUI.py"]

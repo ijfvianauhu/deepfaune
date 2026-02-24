@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+
+  deepfaune-cpu:
+    profiles: ["cpu"]
+    image: deepfaune:${VERSION}-cpu
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USERID: ${USERID}
+        GROUPID: ${GROUPID}
+        VERSION: ${VERSION}
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./config:/config
+      - ./data:/data
+      - ./apps:/apps
+      - ./apps/test_detector.py:/app/test_detector.py
+      - ./apps/test_allyolomodels.py:/app/test_allyolomodels.py
+    stdin_open: true
+    tty: true
+
+  deepfaune-gpu:
+    profiles: ["gpu"]
+    image: deepfaune:${VERSION}-gpu
+    build:
+      context: .
+      dockerfile: Dockerfile.gpu
+      args:
+        USERID: ${USERID}
+        GROUPID: ${GROUPID}
+        VERSION: ${VERSION}
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./config:/config
+      - ./data:/data
+      - /apps:/apps
+      - ./apps/test_detector.py:/app/test_detector.py
+      - ./apps/test_allyolomodels.py:/app/test_allyolomodels.py
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    stdin_open: true
+    tty: true

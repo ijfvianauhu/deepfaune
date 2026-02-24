@@ -1,0 +1,27 @@
+setuptools<81
+
+# Core ML
+torch
+torchvision
+
+# YOLO
+ultralytics
+yolov5
+
+# Models / utils
+timm
+
+# Data
+pandas
+numpy
+
+# Imaging / video
+opencv-python
+pillow
+
+# Serialization / parsing
+dill
+hachoir
+
+# Optional (Excel)
+openpyxl
