@@ -1,0 +1,175 @@
+# DeepFaune Docker Runner
+
+This repository provides everything needed to run **DeepFaune** inside a Docker container.
+
+It allows you to easily execute DeepFaune inference without installing dependencies manually on your system.
+
+---
+
+# 📦 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+cd YOUR_REPOSITORY
+```
+
+# ⚙️ Configuration
+
+Before running the container, you must create your environment configuration file.
+
+Copy the example file:
+```bash
+cp .env.example .env
+```
+Then, edit the `.env` file to set your configuration parameters.
+
+## Environment Variables
+
+- `VERSION`: Specifies which DeepFaune Docker image version will be used.  Example: `VERSION=v1.4.1`.
+- `CUDA`: Controls GPU usage. Example: `CUDA=0`.
+- `REPO`: Repository source 
+- `USERID`, `GROUPID`: User and group permissions : Set these to match your host system's user and group IDs to avoid 
+permission issues when accessing files from the container. Example: `USERID=1000`, `GROUPID=1000`. By default, it uses 
+the current user's IDs.
+
+# ▶️ Quick Start
+
+All Docker operations are managed through the `setup.sh` script.
+
+This script handles:
+
+- Cloning the DeepFaune source code (if not already present)
+- Building the Docker image (CPU or GPU)
+- Running the container (with graphical interface support)
+- Opening an interactive shell inside the container
+- Destroying the Docker stack
+
+---
+
+## 1️⃣ Build the Docker Image
+
+To build the DeepFaune Docker image:
+
+```bash
+./setup.sh build
+```
+
+If you want to force a rebuild without using Docker cache:
+
+```bash
+./setup.sh build --no-cache
+```
+
+What this does:
+
+* Clones the DeepFaune repository at the specified `VERSION` (if not already cloned)
+* Selects CPU or GPU profile based on the `CUDA` variable
+* Builds the corresponding Docker Compose service:
+  * deepfaune-cpu
+  * deepfaune-gpuç
+
+## 2️⃣ Run the Container (Graphical Interface Enabled)
+
+To start DeepFaune:
+
+```bash
+./setup.sh run
+```
+
+This command:
+
+* Selects CPU or GPU profile automatically
+* Enables X11 forwarding (xhost +local:docker)
+* Launches the appropriate Docker Compose service
+* Builds the image if needed
+
+This mode is intended for running DeepFaune with graphical interface support.
+
+## 3️⃣ Open an Interactive Shell
+
+To open a Bash shell inside the container:
+
+```bash
+./setup.sh shell
+```
+This is useful for:
+
+* Debugging
+* Manual testing
+* Running DeepFaune commands interactively
+* Inspecting the environment
+
+The container will be removed automatically when you exit the shell.
+
+## 4️⃣ Destroy the Stack
+
+To stop containers and remove related resources:
+
+```
+./setup.sh destroy
+```
+This will:
+
+* Stop running containers
+* Remove local images created by Docker Compose
+* Remove associated volumes
+
+Use this if you want a clean reset of the environment.
+
+## Command Summary
+
+| Command              | Description                           |
+| -------------------- | ------------------------------------- |
+| `./setup.sh build`   | Build Docker image                    |
+| `./setup.sh run`     | Run DeepFaune container (GUI enabled) |
+| `./setup.sh shell`   | Open interactive shell                |
+| `./setup.sh destroy` | Stop and remove containers/images     |
+
+The script automatically reads configuration from the `.env` file and selects:
+
+* The DeepFaune version (VERSION)
+* CPU or GPU mode (CUDA)
+* Repository source (REPO)
+* User and group permissions (USERID, GROUPID)
+
+# 🖥️ Included Applications
+
+This repository includes **two main Python applications** for running DeepFaune detection:
+
+---
+
+## 1️⃣ Single Image Detector
+
+Script  `testDetector.py` contains yhe Detector class `CustomDetector` which purpose is to process a folder of images 
+and generate a single CSV file containing all detections. We can use it executing the following command:
+
+```bash
+python testDetector.py <IMAGE_FOLDER> <OUTPUT_CSV>
+```
+
+Features:
+
+* Loads a specified YOLO model.
+* Detects animals, humans, and vehicles.
+* Crops animal images for further classification.
+* Saves results in a CSV with columns: filename, category, xmin, ymin, xmax, ymax, animal_count, num_humans.
+
+## 2️⃣ Batch Multi-Model Detector
+
+Script `run_all_detectors.py` includes the detector class `CustomDetector2`. The purpose of this script is execute  
+multiple YOLO models with different thresholds over a folder of images, generating one CSV per model-threshold combination.
+
+Usage:
+
+```
+python run_all_detectors.py <IMAGE_FOLDER> <OUTPUT_FOLDER>
+```
+
+Features:
+
+* Supports multiple models: DF, MDS, DFMDS, MDR.
+* Runs each model with a set of configurable thresholds (e.g., 0.1, 0.25, 0.5, 0.6, 0.75, 0.9).
+* Saves separate CSV files for each combination of model and threshold.
+* Includes metadata columns: detector, threshold, along with all detection details (xmin, ymin, xmax, ymax, animal_count, num_humans).
