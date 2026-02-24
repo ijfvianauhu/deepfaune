@@ -173,3 +173,23 @@ Features:
 * Runs each model with a set of configurable thresholds (e.g., 0.1, 0.25, 0.5, 0.6, 0.75, 0.9).
 * Saves separate CSV files for each combination of model and threshold.
 * Includes metadata columns: detector, threshold, along with all detection details (xmin, ymin, xmax, ymax, animal_count, num_humans).
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is licensed under the GNU General Public License v3.0 or later - see the [LICENSE](LICENSE) file for details.
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License 
+as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+
+## 🏛️ Funding
+
+This work is part of the [WildINTEL project](https://wildintel.eu/), funded by the Biodiversa+ Joint Research Call 2022-2023 “Improved
+transnational monitoring of biodiversity and ecosystem change for science and society (BiodivMon)”. Biodiversa+ is the 
+European co-funded biodiversity partnership supporting excellent research on biodiversity with an impact for policy and
+society. Biodiversa+ is part of the European Biodiversity Strategy for 2030 that aims to put Europe’s biodiversity on a
+path to recovery by 2030 and is co-funded by the European Commission. 
