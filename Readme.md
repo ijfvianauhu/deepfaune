@@ -1,8 +1,47 @@
-# DeepFaune Docker Runner
+# <img src="img/wildIntel_logo.webp" alt="Wildintel DeepFaune Runner" height="60">  Wildintel DeepFaune Runner
 
-This repository provides everything needed to run **DeepFaune** inside a Docker container.
+![Python](https://img.shields.io/badge/python-3.11-blue.svg)
+![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
+[![WildINTEL](https://img.shields.io/badge/WildINTEL-v1.0-blue)](https://wildintel.eu/)
 
-It allows you to easily execute DeepFaune inference without installing dependencies manually on your system.
+<hr>
+
+## Utilities for running DeepFaune detection in Docker
+
+## 🚀 Features
+
+- **Single Image Detection**: Use the `testDetector.py` script with the `CustomDetector` class to process a folder of images.  
+  Generates a single CSV file with all detections, including animal crops, human and vehicle boxes.
+
+- **Batch Multi-Model Detection**: Use the `run_all_detectors.py` script with the `CustomDetector2` class to run multiple YOLO models with different thresholds.  
+  Generates one CSV file per model-threshold combination, including detailed metadata (`detector`, `threshold`, `xmin`, `ymin`, `xmax`, `ymax`, `animal_count`, `num_humans`).
+
+- **Docker-based execution**: All DeepFaune workflows can be run via the `setup.sh` script, which handles:  
+  - Cloning the DeepFaune repository  
+  - Building CPU or GPU Docker images  
+  - Running containers with GUI support  
+  - Opening interactive shells for debugging  
+  - Cleaning up Docker images and volumes
+
+---
+
+## 📋 Requirements
+
+* Python 3.12 or higher  
+* Docker and Docker Compose (for containerized execution)  
+* NVIDIA GPU + NVIDIA Container Toolkit (optional, for GPU acceleration)  
+* DeepFaune model weights (automatically downloaded via the scripts)  
+* Access to input image folder
+
+---
+
+## 🧭 Overview
+
+This repository provides an easy-to-use workflow for automatic wildlife detection using DeepFaune YOLO models.  
+Users can either run single-image detection for smaller datasets or execute multi-model batch detection with different thresholds.  
+
+All operations are containerized for reproducibility and ease of deployment.  
+The `.env` configuration file allows adjusting model versions, CUDA usage, and other runtime settings.
 
 ---
 
