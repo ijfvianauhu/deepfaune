@@ -49,7 +49,7 @@ RUN curl -L \
     -o /app/deepfaune-yolov8s_960.pt
 
 RUN curl -L \
-    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0.pt \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0-sorrel.pt \
     -o /app/md_v1000.0.0-sorrel.pt
 
 RUN curl -L \
