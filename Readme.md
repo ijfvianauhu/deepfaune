@@ -52,6 +52,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/ijfvianauhu/deepfaune.git
 cd deepfaune
+mkdir data
 ```
 
 # ⚙️ Configuration
@@ -60,7 +61,7 @@ Before running the container, you must create your environment configuration fil
 
 Copy the example file:
 ```bash
-cp .env.example .env
+cp env.example .env
 ```
 Then, edit the `.env` file to set your configuration parameters.
 
