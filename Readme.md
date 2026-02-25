@@ -1,8 +1,8 @@
-# <img src="img/wildIntel_logo.webp" alt="Wildintel DeepFaune Runner" height="60">  Wildintel DeepFaune Runner
+# <img src="img/wildIntel_logo-1.webp" alt="Wildintel DeepFaune Runner" height="60">  Wildintel DeepFaune Runner
 
-![Python](https://img.shields.io/badge/python-3.11-blue.svg)
 ![License](https://img.shields.io/badge/license-GPLv3-blue.svg)
 [![WildINTEL](https://img.shields.io/badge/WildINTEL-v1.0-blue)](https://wildintel.eu/)
+[![Deepfaune](https://img.shields.io/badge/deepfaune-v1.0-blue)]([https://wildintel.eu/](https://www.deepfaune.cnrs.fr/en/))
 
 <hr>
 
@@ -182,11 +182,11 @@ This repository includes **two main Python applications** for running DeepFaune 
 
 ## 1️⃣ Single Image Detector
 
-Script  `testDetector.py` contains yhe Detector class `CustomDetector` which purpose is to process a folder of images 
+Script  `test_detector.py` contains the detector class `CustomDetector` which purpose is to process a folder of images 
 and generate a single CSV file containing all detections. We can use it executing the following command:
 
 ```bash
-python testDetector.py <IMAGE_FOLDER> <OUTPUT_CSV>
+python test_detector.py <IMAGE_FOLDER> <OUTPUT_CSV>
 ```
 
 Features:
@@ -194,17 +194,17 @@ Features:
 * Loads a specified YOLO model.
 * Detects animals, humans, and vehicles.
 * Crops animal images for further classification.
-* Saves results in a CSV with columns: filename, category, xmin, ymin, xmax, ymax, animal_count, num_humans.
+* Saves results in a CSV with columns: filename, category, xmin, ymin, xmax, ymax, animal_count, num_humans. Category field is coded as: 1=animal, 2=person, 3=vehicle, 0=empty.
 
 ## 2️⃣ Batch Multi-Model Detector
 
-Script `run_all_detectors.py` includes the detector class `CustomDetector2`. The purpose of this script is execute  
+Script `test_allyolomodels.py` includes the detector class `CustomDetector2`. The purpose of this script is execute  
 multiple YOLO models with different thresholds over a folder of images, generating one CSV per model-threshold combination.
 
 Usage:
 
 ```
-python run_all_detectors.py <IMAGE_FOLDER> <OUTPUT_FOLDER>
+python test_allyolomodels.py <IMAGE_FOLDER> <OUTPUT_FOLDER>
 ```
 
 Features:
