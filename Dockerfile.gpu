@@ -46,11 +46,25 @@ COPY software /app
 COPY requirements.txt /app
 
 # Descargar modelos
-RUN curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-yolov8s_960.pt -o deepfaune-yolov8s_960.pt && \
-    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0.pt -o md_v1000.0.0.pt && \
-    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0-redwood.pt -o md_v1000.0.0-redwood.pt && \
-    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt -o deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt && \
-    curl -L https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt -o deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt
+RUN curl -L \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-yolov8s_960.pt \
+    -o /app/deepfaune-yolov8s_960.pt
+
+RUN curl -L \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0-sorrel.pt \
+    -o /app/md_v1000.0.0-sorrel.pt
+
+RUN curl -L \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/md_v1000.0.0-redwood.pt \
+    -o /app/md_v1000.0.0-redwood.pt
+
+RUN curl -L \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt \
+    -o /app/deepfaune-vit_large_patch14_dinov2.lvd142m.v4.pt
+
+RUN curl -L \
+    https://pbil.univ-lyon1.fr/software/download/deepfaune/v1.4/deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt \
+    -o /app/deepfaune-vit_large_patch14_dinov2.lvd142m.v4-bird_head.pt
 
 # Instalar pip actualizado
 RUN python -m pip install --upgrade pip setuptools wheel
